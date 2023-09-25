@@ -44,4 +44,4 @@ export const rowsData = [
 
 export type Tests = typeof rowsData
 
-export type TestRecord = Tests[0]
+export type PingTest = Tests[0]

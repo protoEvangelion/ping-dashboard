@@ -1,11 +1,6 @@
-export type TestRecord = {
-    id: string
-    status: 'success' | 'running' | 'failed' | undefined
-    description: string
-    agent: string
-    destIp: string
-    shouldFail: boolean
-}
+import type { PingTest } from './db/schema/pingtest'
+
+export type { PingTest }
 
 export type AgentRecord = {
     id: string
@@ -18,8 +13,8 @@ export type AgentRecord = {
 
 export type CoordinatorClientMsg =
     | {
-          tests: TestRecord[]
+          tests: PingTest[]
       }
     | {
-          test: TestRecord
+          test: PingTest
       }

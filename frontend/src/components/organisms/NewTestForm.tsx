@@ -1,20 +1,12 @@
 'use client'
 
-import {
-    Button,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    ModalContent,
-    useDisclosure,
-} from '@nextui-org/react'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalContent, useDisclosure } from '@nextui-org/react'
 
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AgentSelect } from '../molecules/AgentSelect'
-import { TestRecord } from '@/app/data/rows'
+import { PingTest } from '@/app/data/rows'
 import { FiPlusCircle } from 'react-icons/fi'
 import { Input } from '../atoms/Input'
 
@@ -31,11 +23,7 @@ const schema = z.object({
 
 export type NewTestFormValue = z.infer<typeof schema>
 
-export const NewTestForm = ({
-    addRow,
-}: {
-    addRow: (row: TestRecord) => void
-}) => {
+export const NewTestForm = ({ addRow }: { addRow: (row: PingTest) => void }) => {
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
     const methods = useForm<NewTestFormValue>({
@@ -55,21 +43,10 @@ export const NewTestForm = ({
 
     return (
         <FormProvider {...methods}>
-            <Button
-                variant="solid"
-                color="primary"
-                endContent={<FiPlusCircle />}
-                onPress={onOpen}
-                className="mx-4"
-            >
+            <Button variant="solid" color="primary" endContent={<FiPlusCircle />} onPress={onOpen} className="mx-4">
                 Add New Test
             </Button>
-            <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                placement="top-center"
-                className="dark"
-            >
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center" className="dark">
                 <ModalContent>
                     {(onClose) => (
                         <>

@@ -1,10 +1,10 @@
-import { drizzle, BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite'
+import { drizzle } from 'drizzle-orm/bun-sqlite'
 import { Database } from 'bun:sqlite'
 import { rowsData } from './data/tests-example'
-import { TestRecord } from '../types'
+import { pingTest } from './db/schema/pingtest'
 
 const sqlite = new Database('ping.sqlite', { create: true })
-const db: BunSQLiteDatabase = drizzle(sqlite)
+const db = drizzle(sqlite, { schema: { pingTest } })
 
 // if (process.argv.includes('--seed')) {
 //     seedDB()
@@ -13,18 +13,18 @@ const db: BunSQLiteDatabase = drizzle(sqlite)
 //     runTestQuery()
 // }
 
-export function setupDB() {
-    seedDB()
+const a = await db.query.pingTest.findMany()
 
+console.log('!!!!!', a)
+
+export function setupDB() {
     return {
         db,
-        // Using prepare to cache the statement and improve perf
-        getTestsQuery: db.prepare<TestRecord, null>('SELECT * FROM tests'),
-        updateTestStatusQuery: db.prepare('UPDATE tests SET status = $status WHERE id = $id'),
     }
 }
 
 function seedDB() {
+    const db = new Database('ping.sqlite', { create: true })
     // Clear the DB
     db.exec('DROP TABLE IF EXISTS tests')
 

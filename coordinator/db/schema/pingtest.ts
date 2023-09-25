@@ -1,6 +1,6 @@
 import { text, sqliteTable, integer } from 'drizzle-orm/sqlite-core'
 
-export const pingTests = sqliteTable('pingTests', {
+export const pingTest = sqliteTable('tests', {
     id: integer('id').primaryKey(),
     description: text('description'),
     agent: integer('agent'),
@@ -8,3 +8,5 @@ export const pingTests = sqliteTable('pingTests', {
     shouldFail: integer('shouldFail', { mode: 'boolean' }),
     status: text('status', { enum: ['success', 'failed', 'running', 'not ran', 'error'] }),
 })
+
+export type PingTest = typeof pingTest.$inferSelect

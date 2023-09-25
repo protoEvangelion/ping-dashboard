@@ -1,6 +1,6 @@
 import ping from 'ping'
 import os from 'os'
-import { TestRecord } from '../types'
+import { PingTest } from '../types'
 
 const port = 1002
 
@@ -19,7 +19,7 @@ export function setupAgentWs() {
                 console.log('message', message)
 
                 try {
-                    const tests: TestRecord[] = JSON.parse(message)
+                    const tests: PingTest[] = JSON.parse(message)
                     tryConnects(tests).forEach((pingResult) => {
                         pingResult
                             .then((result) => {
@@ -40,7 +40,7 @@ export function setupAgentWs() {
     })
 }
 
-function tryConnects(tests: TestRecord[]) {
+function tryConnects(tests: PingTest[]) {
     const hostIP = getLocalIP()
 
     if (!hostIP) {
@@ -57,7 +57,7 @@ function tryConnects(tests: TestRecord[]) {
     )
 }
 
-function getStatusText(isAlive: boolean, shouldFail: boolean): TestRecord['status'] {
+function getStatusText(isAlive: boolean, shouldFail: boolean): PingTest['status'] {
     return shouldFail ? (isAlive ? 'failed' : 'success') : isAlive ? 'success' : 'failed'
 }
 
