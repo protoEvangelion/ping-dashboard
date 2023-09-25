@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/bun-sqlite'
 import { Database } from 'bun:sqlite'
-import { rowsData } from './data/tests-example'
+import { rowsData } from './data/tests.ts'
 import { pingTest } from './db/schema/pingtest'
 
 const sqlite = new Database('ping.sqlite', { create: true })
@@ -13,11 +13,9 @@ const db = drizzle(sqlite, { schema: { pingTest } })
 //     runTestQuery()
 // }
 
-const a = await db.query.pingTest.findMany()
-
-console.log('!!!!!', a)
-
 export function setupDB() {
+    seedDB()
+
     return {
         db,
     }
@@ -52,5 +50,3 @@ function seedDB() {
 
     console.log('Seeded DB: ', rows)
 }
-
-function runTestQuery() {}
