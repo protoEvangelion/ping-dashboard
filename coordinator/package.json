@@ -1,0 +1,20 @@
+{
+    "name": "coordinator",
+    "module": "index.ts",
+    "type": "module",
+    "scripts": {
+        "dev": "bun --hot run index.ts",
+        "db:generate": "drizzle-kit generate:sqlite",
+        "db:push": "drizzle-kit push:sqlite"
+    },
+    "devDependencies": {
+        "bun-types": "latest",
+        "drizzle-kit": "^0.19.13"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "drizzle-orm": "^0.28.6"
+    }
+}
