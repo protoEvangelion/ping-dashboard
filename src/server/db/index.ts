@@ -1,20 +1,39 @@
-import { drizzle } from "drizzle-orm/libsql";
-import { createClient } from "@libsql/client";
+import { drizzle } from 'drizzle-orm/vercel-postgres';
+import { sql } from '@vercel/postgres';
+import {
+  pgTable,
+  serial,
+  text,
+  boolean,
+  timestamp,
+} from 'drizzle-orm/pg-core';
+ 
+// Use this object to send drizzle queries to your DB
+export const db = drizzle(sql);
+// Create a pgTable that maps to a table in your DB
+export const TestsTable = pgTable(
+  'tests',
+  {
+    id: serial('id').primaryKey(),
+    description: text('description'),
+    agent: text('agent').notNull(),
+    destIp: text('destIp').notNull(),
+    shouldFail: boolean('shouldFail').notNull(),
+    status: text('status', { enum: ['success', 'failed', 'running', 'not ran', 'error'] }),
+    createdAt: timestamp('createdAt').defaultNow().notNull(),
+  },
+  // (tests) => {
+  //   return {
+  //     uniqueIdx: uniqueIndex('unique_idx').on(tests.email),
+  //   };
+  // },
+);
 
-const client = createClient({
-  url: "DATABASE_URL",
-  authToken: "DATABASE_AUTH_TOKEN",
-});
+export type PingTest = typeof TestsTable.$inferSelect
 
-const db = drizzle(client);
+ 
+export const getExampleTable = async () => {
+  const selectResult = await db.select().from(TestsTable);
+  console.log('Results', selectResult);
+};
 
-// const result = await db.select().from(users).all();
-
-// import { BunSQLiteDatabase, drizzle } from "drizzle-orm/bun-sqlite";
-// import { migrate } from "drizzle-orm/bun-sqlite/migrator";
-// import { Database } from "bun:sqlite";
-
-// const sqlite = new Database("ping.sqlite", { create: true });
-// const db: BunSQLiteDatabase = drizzle(sqlite);
-
-// await migrate(db, { migrationsFolder: "drizzle" });

@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { CoordinatorClientMsg } from "../..";
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
 
 export function useWebSocket<T>(
   url: string,
-  transform: (msg: T, prevData: T) => T = (x) => x,
+  transform: (msg: T, prevData?: T) => T = (x) => x,
 ): {
   data: T | undefined;
-  setData: (data: T) => T;
+  setData: Dispatch<SetStateAction<T | undefined>>;
   socket: WebSocket | undefined;
 } {
   const [data, setData] = useState<T>();
@@ -20,7 +19,7 @@ export function useWebSocket<T>(
     };
 
     socketRef.current.onmessage = (event) => {
-      const msg = JSON.parse(event.data) as CoordinatorClientMsg;
+      const msg = JSON.parse(event.data);
       console.log(`Socket message: `, msg);
 
       setData((prevData) => transform(msg, prevData));

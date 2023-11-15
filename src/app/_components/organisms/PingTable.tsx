@@ -13,8 +13,8 @@ import { Status } from "../molecules/cell-renderers/Status";
 // import { NewTestForm } from "./NewTestForm";
 import { Action } from "../molecules/cell-renderers/Action";
 // import { useWebSocket } from "~/app/hooks/useWebSocket";
-import { RunTests } from "../molecules/RunTests";
-import { rowsData } from "~/data/tests-example";
+// import { RunTests } from "../molecules/RunTests";
+import { type PingTest, rowsData } from "~/data/tests-example";
 // import { transformTestRows } from "~/transformers/transformTestRows";
 
 const colDefs = [

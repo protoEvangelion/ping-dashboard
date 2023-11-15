@@ -1,6 +1,6 @@
 'use client'
 
-import { Chip, ChipProps } from '@nextui-org/react'
+import { Chip, type ChipProps } from '@nextui-org/react'
 
 const statusColorMap: Record<string, ChipProps['color']> = {
     success: 'success',
@@ -8,10 +8,10 @@ const statusColorMap: Record<string, ChipProps['color']> = {
     failed: 'danger',
 } as const
 
-export const Status = ({ status }: { status: keyof typeof statusColorMap }) => (
+export const Status = ({ status }: { status?: any }) => (
     <Chip
         className="capitalize"
-        color={statusColorMap[status] || 'default'}
+        color={statusColorMap[status] ?? 'default'}
         size="sm"
         variant="flat"
     >
