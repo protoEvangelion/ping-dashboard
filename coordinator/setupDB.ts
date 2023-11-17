@@ -28,7 +28,7 @@ function seedDB() {
 
     // Create a new table
     db.exec(
-        'CREATE TABLE tests (id TEXT, status TEXT NULL, description TEXT, agent TEXT, destIp TEXT, shouldFail BOOLEAN)'
+        'CREATE TABLE tests (id TEXT, status TEXT NULL, description TEXT, agent_id TEXT, dest_ip TEXT, should_fail BOOLEAN)'
     )
 
     // Insert your data into the table
@@ -37,15 +37,17 @@ function seedDB() {
             rowsData[i].id,
             rowsData[i].status || null,
             rowsData[i].description,
-            rowsData[i].agent,
-            rowsData[i].destIp,
-            rowsData[i].shouldFail,
+            rowsData[i].agent_id,
+            rowsData[i].dest_ip,
+            rowsData[i].should_fail,
         ])
     }
 
     // Read the data back to verify it was inserted correctly
     const rows = db
-        .prepare('SELECT id, status, description, agent, destIp, CAST(shouldFail AS BOOLEAN) AS shouldFail FROM tests')
+        .prepare(
+            'SELECT id, status, description, agent_id, dest_ip, CAST(should_fail AS BOOLEAN) AS should_fail FROM tests'
+        )
         .all()
 
     console.log('Seeded DB: ', rows)

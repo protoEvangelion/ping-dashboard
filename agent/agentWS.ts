@@ -1,6 +1,6 @@
 import ping from 'ping'
 import os from 'os'
-import { PingTest } from '../types'
+import { type PingTest } from '../types'
 
 const port = 1002
 
@@ -25,7 +25,9 @@ export function setupAgentWs() {
                             .then((result) => {
                                 ws.send(JSON.stringify({ test: result }))
                             })
-                            .catch((err) => ws.close(1011, `Error pinging ip: ${err}`))
+                            .catch((err) =>
+                                ws.close(1011, `Error pinging ip: ${err}`)
+                            )
                     })
                 } catch (error) {
                     ws.close(1011, 'Error parsing JSON from message')
@@ -50,15 +52,24 @@ function tryConnects(tests: PingTest[]) {
     console.log(`Host IP: ${hostIP}`)
 
     return tests.map((x) =>
-        isConnected(x.destIp).then((isAlive) => ({
+        isConnected(x.dest_ip).then((isAlive) => ({
             ...x,
-            status: getStatusText(isAlive, x.shouldFail),
+            status: getStatusText(isAlive, x.should_fail),
         }))
     )
 }
 
-function getStatusText(isAlive: boolean, shouldFail: boolean): PingTest['status'] {
-    return shouldFail ? (isAlive ? 'failed' : 'success') : isAlive ? 'success' : 'failed'
+function getStatusText(
+    isAlive: boolean,
+    should_fail: boolean
+): PingTest['status'] {
+    return should_fail
+        ? isAlive
+            ? 'failed'
+            : 'success'
+        : isAlive
+          ? 'success'
+          : 'failed'
 }
 
 function isConnected(ip: string): Promise<boolean> {
@@ -67,10 +78,12 @@ function isConnected(ip: string): Promise<boolean> {
 
 function getLocalIP() {
     const networkInterfaces = os.networkInterfaces()
-    const localInterface = networkInterfaces['en0'] || networkInterfaces['Wi-Fi']
+    const localInterface = networkInterfaces.en0 || networkInterfaces['Wi-Fi']
 
     if (localInterface) {
-        const localIPv4 = localInterface.find((iface) => iface.family === 'IPv4')
+        const localIPv4 = localInterface.find(
+            (iface) => iface.family === 'IPv4'
+        )
         if (localIPv4) {
             return localIPv4.address
         }
